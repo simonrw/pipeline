@@ -31,9 +31,9 @@ def main(parses):
     files = []
 
     for file in result.split():
-        files.append(file)
+        files.append(file.lstrip('data/'))
 
-    print len(files) 
+
 
 if __name__ == "__main__":
 
