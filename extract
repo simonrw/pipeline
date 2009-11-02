@@ -25,8 +25,13 @@ def main(parses):
 
     scale_low = 5.1
     scale_high = 5.3
+    dir = args[0]
 
-    p = Popen('ls data/*.fits', stdout=PIPE, shell=True, stderr=PIPE)
+    if dir[-1] != '/':
+        dir += '/'
+
+
+    p = Popen('ls %s*.fits' % (dir,), stdout=PIPE, shell=True, stderr=PIPE)
                 
     result, error = p.communicate()
 
@@ -47,7 +52,8 @@ def main(parses):
         print cmd
         p = Popen(cmd, shell=True, stderr=PIPE)
 
-        error = p.communicate()
+        p.communicate() #run the command
+
 
         #if len(error) != 0:
         #    print error,
@@ -63,6 +69,9 @@ if __name__ == "__main__":
 
     options, args = parser.parse_args()
 
+    if len(args) != 1:
+            print >> sys.stderr, "Source directory argument required"
+            exit(1)
 
 
     main((options, args))
