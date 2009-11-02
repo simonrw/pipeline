@@ -49,9 +49,9 @@ def main(parses):
 
     for file in files:
         cmd = 'solve-field --scale-units arcsecperpix \
-                --scale-low %f --scale-high %f %s --no-plots \
-                --overwrite --dir solved ' % (scale_low, 
-                        scale_high, file)
+--scale-low %f --scale-high %f %s/%s --no-plots \
+--overwrite --dir %s' % (scale_low, 
+                        scale_high, dir, file, outputdir)
         print cmd
         p = Popen(cmd, shell=True, stderr=PIPE)
 
