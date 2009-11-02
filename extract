@@ -20,7 +20,7 @@ def main(parses):
     """Main function"""
     options, args = parses
 
-    p = Popen('ls *.fits', stdout=PIPE, shell=True, stderr=PIPE)
+    p = Popen('ls data/*.fits', stdout=PIPE, shell=True, stderr=PIPE)
                 
     result, error = p.communicate()
 
@@ -33,15 +33,15 @@ def main(parses):
     for file in result.split():
         files.append(file)
 
-    
+    print len(files) 
 
 if __name__ == "__main__":
 
     parser = OptionParser()
     
-    parser.add_option('-v', '--verbose', action='store_true',
-            dest='verbose', default=False, 
-            help='Print extra logging information')
+    #parser.add_option('-v', '--verbose', action='store_true',
+    #        dest='verbose', default=False, 
+    #        help='Print extra logging information')
 
     options, args = parser.parse_args()
 
