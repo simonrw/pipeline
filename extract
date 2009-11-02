@@ -4,6 +4,7 @@ import sys
 import optparse
 import os
 from subprocess import PIPE, Popen, STDOUT
+from IPython.Shell import IPShellEmbed
 
 
 class OptionParser(optparse.OptionParser):
@@ -17,8 +18,13 @@ class OptionParser(optparse.OptionParser):
             self.error("%s option not supplied" % option)
 
 def main(parses):
+
+    ipshell = IPShellEmbed()
     """Main function"""
     options, args = parses
+
+    scale_low = 5.1
+    scale_high = 5.3
 
     p = Popen('ls data/*.fits', stdout=PIPE, shell=True, stderr=PIPE)
                 
@@ -31,9 +37,21 @@ def main(parses):
     files = []
 
     for file in result.split():
-        files.append(file.lstrip('data/'))
+        #files.append(file.lstrip('data/'))
+        files.append(file)
 
 
+
+    for file in files:
+        cmd = 'solve-field --scale-units arcsecperpix --scale-low %f --scale-high %f %s --no-plots --overwrite --dir solved --solved none' % (scale_low, scale_high, file)
+        print cmd
+        p = Popen(cmd, shell=True, stderr=PIPE)
+
+        error = p.communicate()
+
+        #if len(error) != 0:
+        #    print error,
+        #    sys.exit(1)
 
 if __name__ == "__main__":
 
