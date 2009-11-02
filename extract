@@ -26,12 +26,12 @@ def main(parses):
     scale_low = 5.1
     scale_high = 5.3
     dir = args[0]
+    outputdir = 'solved'
 
-    if dir[-1] != '/':
-        dir += '/'
+    dir = dir.rstrip('/')
 
-
-    p = Popen('ls %s*.fits' % (dir,), stdout=PIPE, shell=True, stderr=PIPE)
+    
+    p = Popen('ls %s/*.fits' % (dir,), stdout=PIPE, shell=True, stderr=PIPE)
                 
     result, error = p.communicate()
 
@@ -42,8 +42,8 @@ def main(parses):
     files = []
 
     for file in result.split():
-        #files.append(file.lstrip('data/'))
-        files.append(file)
+        files.append(file.lstrip("%s/" % (dir,)))
+        #files.append(file)
 
 
 
@@ -59,8 +59,10 @@ def main(parses):
 
         stub = file.rstrip('.fits')
 
-        rmcmd = 'rm -f %s{.axy,.corr,-indx.xyls,.match,.rdls,.solved,.wcs}'
+        rmcmd = 'rm -f %s/%s{.axy,.corr,-indx.xyls,.match,.rdls,.solved,.wcs}' % (outputdir, stub)
+        print "Running command\n%s\n" % (rmcmd,) 
         p = Popen(rmcmd, shell=True, stderr=PIPE)
+        p.communicate()
 
         #if len(error) != 0:
         #    print error,
