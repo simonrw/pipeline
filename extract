@@ -57,6 +57,10 @@ def main(parses):
 
         p.communicate() #run the command
 
+        stub = file.rstrip('.fits')
+
+        rmcmd = 'rm -f %s{.axy,.corr,-indx.xyls,.match,.rdls,.solved,.wcs}'
+        p = Popen(rmcmd, shell=True, stderr=PIPE)
 
         #if len(error) != 0:
         #    print error,
