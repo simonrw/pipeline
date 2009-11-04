@@ -49,21 +49,23 @@ def main(parses):
 
 
     for file in files:
+        #astrometry.net command
         cmd = 'solve-field --scale-units arcsecperpix --scale-low %f --scale-high %f %s/%s --no-plots --overwrite --dir %s' % (scale_low, scale_high, dir, file, outputdir)
-        print "Running command\n%s\n" % (cmd,) 
+        print "Running command:\n%s\n" % (cmd,) ,
         p = Popen(cmd, shell=True) # run astrometry solving program
+        p.communicate()
 
-        p.communicate() #run the command
-
+        #cleaning command
         stub = file.rstrip('.fits')
         cmd = 'rm -f %s/%s{.axy,.corr,-indx.xyls,.match,.rdls,.solved,.wcs}' % (outputdir, stub)
+        print "Running command:\n%s\n" % (cmd,) ,
         p = Popen(cmd, shell=True)
         p.communicate()
 
 
         #sextractor command
         cmd = 'sex -catalog_name sources/%s -filter N -detect_minarea 10 -detect_thresh 7 -analysis_thresh 7 -pixel_scale 5.28 %s/%s' % (file.rstrip('.fits') + '.cat', outputdir, file.rstrip('fits') + 'new')
-        print "Running command\n%s\n" % (cmd,) 
+        print "Running command:\n%s\n" % (cmd,) ,
         p = Popen(cmd, shell=True)
         p.communicate()
 
