@@ -26,9 +26,12 @@ def main(parses):
     scale_low = 5.1
     scale_high = 5.3
     dir = args[0]
-    outputdir = 'solved'
+
+    outputdir = options.outputdir
+
 
     dir = dir.rstrip('/')
+    outputdir = outputdir.rstrip('/')
 
     
     p = Popen('ls %s/*.fits' % (dir,), stdout=PIPE, shell=True, stderr=PIPE)
@@ -43,8 +46,6 @@ def main(parses):
 
     for file in result.split():
         files.append(file.lstrip("%s/" % (dir,)))
-        #files.append(file)
-
 
 
     for file in files:
@@ -75,6 +76,10 @@ if __name__ == "__main__":
     #parser.add_option('-v', '--verbose', action='store_true',
     #        dest='verbose', default=False, 
     #        help='Print extra logging information')
+
+    parser.add_option('-o', '--outputdir', action='store',
+            dest='outputdir', default='.', metavar='dir', 
+            help='Destination to store solved files')
 
     options, args = parser.parse_args()
 
