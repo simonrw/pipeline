@@ -54,7 +54,7 @@ def main(parses):
 --overwrite --dir %s' % (scale_low, 
                         scale_high, dir, file, outputdir)
         print "Running command\n%s\n" % (cmd,) 
-        p = Popen(cmd, shell=True, stderr=STDOUT) # run astrometry solving program
+        p = Popen(cmd, shell=True) # run astrometry solving program
 
         p.communicate() #run the command
 
@@ -62,7 +62,7 @@ def main(parses):
 
         rmcmd = 'rm -f %s/%s{.axy,.corr,-indx.xyls,.match,.rdls,.solved,.wcs}' % (outputdir, stub)
         print "Running command\n%s\n" % (rmcmd,) 
-        p = Popen(rmcmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        p = Popen(rmcmd, shell=True)
         #p.communicate()
 
         #if len(error) != 0:
@@ -72,7 +72,7 @@ def main(parses):
         #sextractor command
         cmd = 'sex -catalog_name sources/%s -filter N -detect_minarea 10 -detect_thresh 7 -analysis_thresh 7 -pixel_scale 5.28 %s/%s' % (file.rstrip('.fits') + '.cat', outputdir, file.rstrip('fits') + 'new')
         print "Running command\n%s\n" % (cmd,) 
-        p = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        p = Popen(cmd, shell=True)
         #p.communicate()
 
 
