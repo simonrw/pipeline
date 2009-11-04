@@ -56,21 +56,16 @@ def main(parses):
         p.communicate() #run the command
 
         stub = file.rstrip('.fits')
+        cmd = 'rm -f %s/%s{.axy,.corr,-indx.xyls,.match,.rdls,.solved,.wcs}' % (outputdir, stub)
+        p = Popen(cmd, shell=True)
+        p.communicate()
 
-        rmcmd = 'rm -f %s/%s{.axy,.corr,-indx.xyls,.match,.rdls,.solved,.wcs}' % (outputdir, stub)
-        print "Running command\n%s\n" % (rmcmd,) 
-        p = Popen(rmcmd, shell=True)
-        #p.communicate()
-
-        #if len(error) != 0:
-        #    print error,
-        #    sys.exit(1)
 
         #sextractor command
         cmd = 'sex -catalog_name sources/%s -filter N -detect_minarea 10 -detect_thresh 7 -analysis_thresh 7 -pixel_scale 5.28 %s/%s' % (file.rstrip('.fits') + '.cat', outputdir, file.rstrip('fits') + 'new')
         print "Running command\n%s\n" % (cmd,) 
         p = Popen(cmd, shell=True)
-        #p.communicate()
+        p.communicate()
 
 
 if __name__ == "__main__":
