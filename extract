@@ -53,8 +53,8 @@ def main(parses):
 --scale-low %f --scale-high %f %s/%s --no-plots \
 --overwrite --dir %s' % (scale_low, 
                         scale_high, dir, file, outputdir)
-        print cmd
-        p = Popen(cmd, shell=True, stderr=PIPE)
+        print "Running command\n%s\n" % (cmd,) 
+        p = Popen(cmd, shell=True, stderr=STDOUT) # run astrometry solving program
 
         p.communicate() #run the command
 
@@ -62,8 +62,8 @@ def main(parses):
 
         rmcmd = 'rm -f %s/%s{.axy,.corr,-indx.xyls,.match,.rdls,.solved,.wcs}' % (outputdir, stub)
         print "Running command\n%s\n" % (rmcmd,) 
-        p = Popen(rmcmd, shell=True, stderr=PIPE)
-        p.communicate()
+        p = Popen(rmcmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        #p.communicate()
 
         #if len(error) != 0:
         #    print error,
