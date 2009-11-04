@@ -2,3 +2,5 @@
 *.swp
 *.new
 solved/*
+sources/*
+data/*
