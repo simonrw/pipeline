@@ -49,10 +49,7 @@ def main(parses):
 
 
     for file in files:
-        cmd = 'solve-field --scale-units arcsecperpix \
---scale-low %f --scale-high %f %s/%s --no-plots \
---overwrite --dir %s' % (scale_low, 
-                        scale_high, dir, file, outputdir)
+        cmd = 'solve-field --scale-units arcsecperpix --scale-low %f --scale-high %f %s/%s --no-plots --overwrite --dir %s' % (scale_low, scale_high, dir, file, outputdir)
         print "Running command\n%s\n" % (cmd,) 
         p = Popen(cmd, shell=True) # run astrometry solving program
 
