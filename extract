@@ -69,6 +69,13 @@ def main(parses):
         #    print error,
         #    sys.exit(1)
 
+        #sextractor command
+        cmd = 'sex -catalog_name sources/%s -filter N -detect_minarea 10 -detect_thresh 7 -analysis_thresh 7 -pixel_scale 5.28 %s/%s' % (file.rstrip('.fits') + '.cat', outputdir, file.rstrip('fits') + 'new')
+        print "Running command\n%s\n" % (cmd,) 
+        p = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        #p.communicate()
+
+
 if __name__ == "__main__":
 
     parser = OptionParser()
