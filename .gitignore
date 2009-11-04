@@ -1,3 +1,4 @@
 *.fits
 *.swp
+*.new
 solved/*
