@@ -44,13 +44,12 @@ class Aperture(object):
 
         return list(ar_flux * ar_err / ar_mag)
 
-     def xyscatter(self):
-         """Returns 2-tuple of x and y offsets from the average 
-         coordinate"""
+    def xyscatter(self):
+        """Returns 2-tuple of x and y offsets from the average 
+        coordinate"""
         x = np.array(self.xcoord)
         y = np.array(self.ycoord)
         self.xav = np.average(self.xcoord) * np.ones(x.shape)
         self.yav = np.average(self.ycoord) * np.ones(y.shape)
 
         return list(x - self.xav), list(y - self.yav)
-
