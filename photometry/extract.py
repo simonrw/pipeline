@@ -32,10 +32,10 @@ def getAperNumbers(fl, d):
 
     return nums
 
-def main(dir):
+def main(options, args):
 
 
-    dir = dir.rstrip('/')
+    dir = args[0].rstrip('/')
 
     filelist = os.listdir(dir)
 
@@ -77,13 +77,82 @@ def main(dir):
 
             aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
    
+    if options.coords and not options.lc:
+        for aper in aperlist.itervalues():
+            plt.figure(aper.num)
+            plt.subplot(211)
+            plt.title('Coordinates')
+            plt.plot(aper.xcoord, 'rx')
+            plt.subplot(212)
+            plt.plot(aper.ycoord, 'rx')
+
+    elif options.lc and not options.coords:
+        for aper in aperlist.itervalues():
+            plt.figure(aper.num)
+            plt.subplot(211)
+            plt.title('Lightcurve for object %s' % aper.num)
+            plt.xlabel('Frame')
+            plt.ylabel(r'$f_{aperture} - f_{sky}$')
+            #plt.plot(aper.sky, 'bx')
+            plt.errorbar(arange(len(filelist)), aper.flux, yerr = aper.getErrors(),  fmt='bx')
+
+            plt.subplot(212)
+            plt.ylabel('Sky')
+            plt.plot(aper.sky, 'rx')
+    
+    elif options.lc and options.coords:
+        for aper in aperlist.itervalues():
+            plt.figure(aper.num)
+            plt.subplot(411)
+            plt.title('Lightcurve for object %s' % aper.num)
+            plt.xlabel('Frame')
+            plt.ylabel(r'$f_{aperture} - f_{sky}$')
+            #plt.plot(aper.sky, 'bx')
+            plt.errorbar(arange(len(filelist)), aper.flux, yerr = aper.getErrors(),  fmt='bx')
+
+            plt.subplot(412)
+            plt.ylabel('Sky')
+            plt.plot(aper.sky, 'rx')
+
+            plt.subplot(413)
+            plt.ylabel('X')
+            plt.plot(aper.xcoord, 'go')
+            plt.subplot(414)
+            plt.ylabel('Y')
+            plt.plot(aper.ycoord, 'go')
 
 
 
+    else:
+        print """No plot commands supplied,
+            -l/--lc = lightcurves
+            -c/--coords = coords"""
+
+
+    plt.show()
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print >> sys.stderr, "Program usage: %s <dir>" % sys.argv[0]
+
+    parser = OptionParser(usage="usage: %prog [options] <dir>",
+            version="0.1")
+
+    parser.add_option('-c', '--coords', action="store_true",
+            dest='coords', default=False, help="Print extracted coordinates")
+
+    parser.add_option('-l', '--lc', action="store_true", 
+            dest="lc", default=False, help="Print extracted lightcurves")
+
+    (options, args) = parser.parse_args()
+
+    if len(args) != 1:
+        print >> sys.stderr, "Program usage: %s [options] <dir>" % sys.argv[0]
         exit(1)
-    main(sys.argv[1])
+    
+    if not options.lc and not options.coords:
+        parser.error("""No plot commands supplied,
+            -l/--lc = lightcurves
+            -c/--coords = coords""")
+
+
+    main(options, args)
 
