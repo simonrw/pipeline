@@ -6,42 +6,8 @@ from optparse import OptionParser
 from subprocess import Popen, call, PIPE, STDOUT
 from numpy import array, arange
 import matplotlib.pyplot as plt
+from ApObs import Aperture
 #from IPython.Shell import IPShellEmbed
-
-class Aperture(object):
-    def __init__(self, num):
-        self.num = num
-        self.xcoord = []
-        self.ycoord = []
-        self.sky = []
-        self.flux = []
-        self.errors = []
-        self.mag = []
-
-    def addLine(self, line):
-        self.xcoord.append(float(line[0]))
-        self.ycoord.append(float(line[1]))
-        self.sky.append(float(line[2]))
-        self.flux.append(float(line[3]))
-        self.errors.append(float(line[4]))
-        self.mag.append(float(line[5]))
-
-
-    def subtracted(self):
-        sky = array(self.sky)
-        flux = array(self.flux)
-        return list(flux - sky)
-
-    def coords(self):
-        return self.xcoord, self.ycoord
-
-    def getErrors(self):
-        ar_err = array(self.errors)
-        ar_mag = array(self.mag)
-        ar_flux = array(self.flux)
-
-
-        return list(ar_flux * ar_err / ar_mag)
 
 
 def getAperNumbers(fl, d):
