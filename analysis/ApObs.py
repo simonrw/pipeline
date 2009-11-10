@@ -57,3 +57,10 @@ class Aperture(object):
     def stats(self):
         """Returns the average and standard deviation"""
         return np.average(self.flux), np.std(self.flux)
+
+    def residuals(self):
+        av = self.stats()[0] * np.ones(np.shape(self.flux))
+        return self.flux - av
+        
+
+
