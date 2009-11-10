@@ -29,7 +29,6 @@ class Aperture(object):
         self.mag.append(float(line[5]))
 
 
-
     def coords(self):
         """Returns the coordinates in a 2-tuple"""
         return self.xcoord, self.ycoord
@@ -53,3 +52,8 @@ class Aperture(object):
         self.yav = np.average(self.ycoord) * np.ones(y.shape)
 
         return list(x - self.xav), list(y - self.yav)
+
+
+    def stats(self):
+        """Returns the average and standard deviation"""
+        return np.average(self.flux), np.std(self.flux)
