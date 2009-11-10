@@ -44,6 +44,27 @@ class Aperture(object):
         return list(ar_flux * ar_err / ar_mag)
 
 
+def getAperNumbers(fl, d):
+    """Arguments:
+        fl = filelist, list of strings containing 
+                filenames
+        d = dir, directory where fl is
+
+    Returns:
+        list of numbers of apertures"""
+
+
+    t = open(d + '/' + fl[0])
+    tmp = t.readlines()
+    t.close()
+
+    nums = []
+
+    for line in tmp:
+        if '#' not in line:
+            nums.append(line.split()[0])
+
+    return nums
 
 def main(dir):
 
@@ -52,11 +73,22 @@ def main(dir):
 
     filelist = os.listdir(dir)
 
-    ap1 = Aperture(1)
-    ap2 = Aperture(2)
-    ap3 = Aperture(3)
-    ap4 = Aperture(4)
-    ap5 = Aperture(5)
+    aperNums = getAperNumbers(filelist, dir)
+
+    
+    
+
+
+
+
+    aperlist = {}
+
+
+    for i in aperNums:
+        aperlist[i] = Aperture(i)
+
+
+
 
 
     for file in filelist:
@@ -71,22 +103,23 @@ def main(dir):
 
         for line in data:
             vals = line.split()
-            num = int(vals[0])
+            num = vals[0] 
             coords = float(vals[1]), float(vals[2])
             flux = {'sky': float(vals[5]), 'aper': float(vals[6])}
             err = float(vals[4])
             mag = float(vals[3])
 
-            if num == 1:
-                ap1.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            elif num == 2:
-                ap2.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            elif num == 3:
-                ap3.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            elif num == 4:
-                ap4.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            elif num == 5:
-                ap5.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
+            aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
+            #if num == 1:
+            #    ap1.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
+            #elif num == 2:
+            #    ap2.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
+            #elif num == 3:
+            #    ap3.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
+            #elif num == 4:
+            #    ap4.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
+            #elif num == 5:
+            #    ap5.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
     
 
     #for aper in [ap1, ap2, ap3, ap4, ap5]:
@@ -97,10 +130,10 @@ def main(dir):
     #    plt.ylabel(r'$f_{aperture} - f_{sky}$')
     #    plt.plot(aper.subtracted())
     #plt.show()
-    for aper in [ap1, ap2, ap3, ap4, ap5]:
+    for aper in aperlist.itervalues():
         plt.figure(aper.num)
         plt.subplot(411)
-        plt.title('Lightcurve for object %d' % aper.num)
+        plt.title('Lightcurve for object %s' % aper.num)
         plt.xlabel('Frame')
         plt.ylabel(r'$f_{aperture} - f_{sky}$')
         #plt.plot(aper.sky, 'bx')
