@@ -46,7 +46,6 @@ def main(options, args):
 
 
 
-
     aperlist = {}
 
 
@@ -78,7 +77,7 @@ def main(options, args):
             aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
 
      
-    if options.coords and not options.lc and not options.hist:
+    if options.coords and not options.lc:
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
             plt.subplot(211)
@@ -87,7 +86,7 @@ def main(options, args):
             plt.subplot(212)
             plt.plot(aper.ycoord, 'rx')
 
-    elif options.lc and not options.coords and not options.hist:
+    elif options.lc and not options.coords:
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
             plt.subplot(211)
@@ -101,7 +100,7 @@ def main(options, args):
             plt.ylabel('Sky')
             plt.plot(aper.sky, 'rx')
     
-    elif options.lc and options.coords and not options.hist:
+    elif options.lc and options.coords:
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
             plt.subplot(411)
@@ -123,13 +122,12 @@ def main(options, args):
             plt.plot(aper.ycoord, 'go')
 
     elif options.hist:
-        bins = raw_input('How many bins?  ')
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
             plt.title('Distribution for aperture %s' % aper.num)
             plt.xlabel('Counts')
             plt.ylabel('Frequency')
-            plt.hist(aper.flux, int(bins))
+            plt.hist(aper.flux, int(options.hist))
 
 
     elif options.err:
@@ -153,8 +151,8 @@ if __name__ == '__main__':
     parser.add_option('-l', '--lc', action="store_true", 
             dest="lc", default=False, help="Print extracted lightcurves")
 
-    parser.add_option('-h', '--hms', action="store_true", 
-            dest="hist", default=False, help="Print extracted histogram")
+    parser.add_option('-h', '--hist', action="store", 
+            dest="hist", default=False, metavar='bins', help="Print extracted histogram")
 
     parser.add_option('-e', '--errors', action="store_true", 
             dest="err", default=False, help="Print extracted errors")
@@ -165,7 +163,7 @@ if __name__ == '__main__':
         print >> sys.stderr, "Program usage: %s [options] <dir>" % sys.argv[0]
         exit(1)
     
-    if not options.lc and not options.coords and not options.hist and not options.err:
+    if not options.lc and not options.coords and not options.err and not options.hist:
         parser.error("""No plot commands supplied,
             -l/--lc = lightcurves
             -c/--coords = coords
