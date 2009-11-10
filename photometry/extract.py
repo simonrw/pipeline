@@ -76,17 +76,9 @@ def main(dir):
             mag = float(vals[3])
 
             aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            #if num == 1:
-            #    ap1.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            #elif num == 2:
-            #    ap2.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            #elif num == 3:
-            #    ap3.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            #elif num == 4:
-            #    ap4.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-            #elif num == 5:
-            #    ap5.addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-    
+   
+
+
 
 
 if __name__ == '__main__':
