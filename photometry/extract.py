@@ -126,7 +126,7 @@ def main(options, args):
         bins = raw_input('How many bins?  ')
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
-            plt.title('Distribution')
+            plt.title('Distribution for aperture %s' % aper.num)
             plt.xlabel('Counts')
             plt.ylabel('Frequency')
             plt.hist(aper.flux, int(bins))
