@@ -76,8 +76,9 @@ def main(options, args):
             mag = float(vals[3])
 
             aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
-   
-    if options.coords and not options.lc:
+
+       
+    if options.coords and not options.lc and not options.hist:
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
             plt.subplot(211)
@@ -86,7 +87,7 @@ def main(options, args):
             plt.subplot(212)
             plt.plot(aper.ycoord, 'rx')
 
-    elif options.lc and not options.coords:
+    elif options.lc and not options.coords and not options.hist:
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
             plt.subplot(211)
@@ -100,7 +101,7 @@ def main(options, args):
             plt.ylabel('Sky')
             plt.plot(aper.sky, 'rx')
     
-    elif options.lc and options.coords:
+    elif options.lc and options.coords and not options.hist:
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
             plt.subplot(411)
@@ -121,6 +122,14 @@ def main(options, args):
             plt.ylabel('Y')
             plt.plot(aper.ycoord, 'go')
 
+    elif options.hist:
+        bins = raw_input('How many bins?  ')
+        for aper in aperlist.itervalues():
+            plt.figure(aper.num)
+            plt.title('Distribution')
+            plt.xlabel('Counts')
+            plt.ylabel('Frequency')
+            plt.hist(aper.flux, int(bins))
 
 
     else:
@@ -133,7 +142,7 @@ def main(options, args):
 
 if __name__ == '__main__':
 
-    parser = OptionParser(usage="usage: %prog [options] <dir>",
+    parser = OptionParser(usage="usage: %prog [options] <dir>", conflict_handler="resolve",
             version="0.1")
 
     parser.add_option('-c', '--coords', action="store_true",
@@ -142,16 +151,20 @@ if __name__ == '__main__':
     parser.add_option('-l', '--lc', action="store_true", 
             dest="lc", default=False, help="Print extracted lightcurves")
 
+    parser.add_option('-h', '--hms', action="store_true", 
+            dest="hist", default=False, help="Print extracted histogram")
+
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
         print >> sys.stderr, "Program usage: %s [options] <dir>" % sys.argv[0]
         exit(1)
     
-    if not options.lc and not options.coords:
+    if not options.lc and not options.coords and not options.hist:
         parser.error("""No plot commands supplied,
             -l/--lc = lightcurves
-            -c/--coords = coords""")
+            -c/--coords = coords
+            -h/--hist = histogram""")
 
 
     main(options, args)
