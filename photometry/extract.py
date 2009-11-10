@@ -77,7 +77,7 @@ def main(options, args):
 
             aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
 
-       
+     
     if options.coords and not options.lc and not options.hist:
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
@@ -132,11 +132,13 @@ def main(options, args):
             plt.hist(aper.flux, int(bins))
 
 
-    else:
-        print """No plot commands supplied,
-            -l/--lc = lightcurves
-            -c/--coords = coords"""
-
+    elif options.err:
+        for aper in aperlist.itervalues():
+            plt.figure(aper.num)
+            plt.title('Error scatter plot for aperture %s' % aper.num)
+            plt.xlabel('Counts')
+            plt.ylabel('Error in counts')
+            plt.scatter(aper.flux, aper.getErrors())
 
     plt.show()
 
@@ -154,17 +156,21 @@ if __name__ == '__main__':
     parser.add_option('-h', '--hms', action="store_true", 
             dest="hist", default=False, help="Print extracted histogram")
 
+    parser.add_option('-e', '--errors', action="store_true", 
+            dest="err", default=False, help="Print extracted errors")
+
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
         print >> sys.stderr, "Program usage: %s [options] <dir>" % sys.argv[0]
         exit(1)
     
-    if not options.lc and not options.coords and not options.hist:
+    if not options.lc and not options.coords and not options.hist and not options.err:
         parser.error("""No plot commands supplied,
             -l/--lc = lightcurves
             -c/--coords = coords
-            -h/--hist = histogram""")
+            -h/--hist = histogram
+            -e/-errors = errors""")
 
 
     main(options, args)
