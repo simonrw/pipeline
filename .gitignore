@@ -3,5 +3,6 @@
 *.swp
 *.new
 solved/*
+*.db
 sources/*
 data/*
