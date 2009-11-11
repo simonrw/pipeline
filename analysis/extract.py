@@ -33,35 +33,21 @@ def getAperNumbers(fl, d):
     return nums
 
 def main(options, args):
-
-
     dir = args[0].rstrip('/')
-
     filelist = os.listdir(dir)
-
     aperNums = getAperNumbers(filelist, dir)
-
-    
-    
-
-
-
-    aperlist = {}
-
-
+    # create dictionary of apertures
+    aperlist = {} 
     for i in aperNums:
         aperlist[i] = Aperture(i)
 
 
 
 
-
+    # read in data to aperture objects
     for file in filelist:
         fptr = open(dir + '/' + file)
         data = []
-
-
-
         for line in fptr.readlines():
             if '#' not in line:
                 data.append(line.rstrip('\n'))
@@ -76,7 +62,7 @@ def main(options, args):
 
             aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
 
-     
+    # Plotting section 
     if options.coords and not options.lc:
         for aper in aperlist.itervalues():
             plt.figure(aper.num)
@@ -153,7 +139,7 @@ if __name__ == '__main__':
 
     parser = OptionParser(usage="usage: %prog [options] <dir>", conflict_handler="resolve",
             version="0.1")
-
+    #add command line arguments
     parser.add_option('-c', '--coords', action="store_true",
             dest='coords', default=False, help="Print extracted coordinates")
 

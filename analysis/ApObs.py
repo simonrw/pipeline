@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Aperture(object):
     """Aperture object"""
     def __init__(self, num):
@@ -61,6 +62,9 @@ class Aperture(object):
     def residuals(self):
         av = self.stats()[0] * np.ones(np.shape(self.flux))
         return self.flux - av
-        
+
+
+
+    #end of class definition
 
 
