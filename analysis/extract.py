@@ -138,6 +138,15 @@ def main(options, args):
             plt.ylabel('Error in counts')
             plt.scatter(aper.flux, aper.getErrors())
 
+    elif options.residuals:
+        for aper in aperlist.itervalues():
+            plt.figure(aper.num)
+            plt.title('Residuals for aperture %s' % aper.num)
+            plt.xlabel('Frame')
+            plt.ylabel(r'$f - \bar{f}$')
+            plt.axhline(linewidth=1, alpha=0.75, color='b')
+            plt.plot(aper.residuals(), 'rx')
+
     plt.show()
 
 if __name__ == '__main__':
@@ -157,18 +166,23 @@ if __name__ == '__main__':
     parser.add_option('-e', '--errors', action="store_true", 
             dest="err", default=False, help="Print extracted errors")
 
+    parser.add_option('-r', '--residuals', action="store_true", 
+            dest="residuals", default=False, help="Print extracted residuals")
+    
+
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
         print >> sys.stderr, "Program usage: %s [options] <dir>" % sys.argv[0]
         exit(1)
     
-    if not options.lc and not options.coords and not options.err and not options.hist:
+    if not options.lc and not options.coords and not options.err and not options.hist and not options.residuals:
         parser.error("""No plot commands supplied,
             -l/--lc = lightcurves
             -c/--coords = coords
             -h/--hist = histogram
-            -e/-errors = errors""")
+            -e/--errors = errors
+            -r/--residuals = residuals""")
 
 
     main(options, args)
