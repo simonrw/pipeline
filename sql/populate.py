@@ -10,17 +10,25 @@ import sqlite3
 
 def main(dir):
 
-    try:
-        conn = sqlite3.connect('./data.db')
-    except:
-        print >> sys.stderr, "Error connecting to database file"
-        exit(1)
+    conn = sqlite3.connect('./data.db')
+    
+    #get list of tables
+    c = conn.cursor()
+    c.execute('select name from sqlite_master where type="table"') #get list of tables
+    r = c.fetchall()
+
+    num = []
+
+    for entry in r:
+        num.append(entry[0].split("_")[-1])
+
+    print num
+    exit(0)
 
 
     dir = dir.rstrip('/')
 
     filelist = os.listdir(dir)
-    c = conn.cursor()
 
     
 
