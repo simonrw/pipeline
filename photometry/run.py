@@ -4,6 +4,7 @@ from subprocess import Popen, PIPE, STDOUT, call
 from sys import argv, stderr, exit
 from os import environ
 from os import path
+from optparse import OptionParser
 
 def printoutput(txt):
         print "Running command\n"
