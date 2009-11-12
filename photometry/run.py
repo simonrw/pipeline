@@ -2,8 +2,7 @@
 
 from subprocess import Popen, PIPE, STDOUT, call
 from sys import argv, stderr, exit
-from os import environ
-from os import path
+import os
 from optparse import OptionParser
 
 def printoutput(txt):
@@ -11,13 +10,34 @@ def printoutput(txt):
         print txt
         print
 
+def _mkdir(newdir):
+    """works the way a good mkdir should :)
+        - already exists, silently complete
+        - regular file in the way, raise an exception
+        - parent directory(ies) does not exist, make them as well
+        
+        credit: http://code.activestate.com/recipes/82465/
+    """
+    if os.path.isdir(newdir):
+        pass
+    elif os.path.isfile(newdir):
+        raise OSError("a file with the same name as the desired " \
+                      "dir, '%s', already exists." % newdir)
+    else:
+        head, tail = os.path.split(newdir)
+        if head and not os.path.isdir(head):
+            _mkdir(head)
+        #print "_mkdir %s" % repr(newdir)
+        if tail:
+            os.mkdir(newdir)
+
 
 def main((options, args)):
 
     srcdir = args[0].rstrip('/')
     outputdir = 'output'
 
-    if not path.isfile(options.apfile):
+    if not os.path.isfile(options.apfile):
         print >> stderr, "Error: initial aperture file '%s' must exist in current directory" % options.apfile
         exit(1)
 
