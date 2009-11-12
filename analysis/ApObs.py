@@ -63,6 +63,22 @@ class Aperture(object):
         av = self.stats()[0] * np.ones(np.shape(self.flux))
         return self.flux - av
 
+    def smoothListGaussian(self, degree=2):
+        """Gaussian smoothing function
+        credit: http://www.swharden.com/blog/2008-11-17-linear-data-smoothing-in-python/"""
+        window=degree*2-1
+        weight=np.array([1.0]*window)
+        weightGauss=[]
+        for i in range(window):
+            i=i-degree+1
+            frac=i/float(window)
+            gauss=1/(np.exp((4*(frac))**2))
+            weightGauss.append(gauss)
+        weight=np.array(weightGauss)*weight
+        smoothed=[0.0]*(len(self.flux)-window)
+        for i in range(len(smoothed)):
+            smoothed[i]=sum(np.array(self.flux[i:i+window])*weight)/sum(weight)
+        return smoothed
 
 
     #end of class definition
