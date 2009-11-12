@@ -84,3 +84,26 @@ class Aperture(object):
     #end of class definition
 
 
+def aperComp(aplist):
+    """Arguments: 
+        list or dictionary of apertures
+    Returns:
+        Average counts per aperture
+        SD per aperture"""
+    counts = []
+    err = []
+    if type(aplist) == list:
+        for aper in aplist:
+            av, er = aper.stats()
+            counts.append(av)
+            err.append(er)
+    elif type(aplist) == dict:
+        for aper in aplist.itervalues():
+            av, er = aper.stats()
+            counts.append(av)
+            err.append(er)
+
+    counts = np.array(counts)
+    err = np.array(err)
+
+    return counts, err
