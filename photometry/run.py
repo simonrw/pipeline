@@ -57,13 +57,21 @@ if __name__ == "__main__":
     parser = OptionParser(usage='Program usage: %prog [options] dir', version='0.1',
             conflict_handler="resolve")
 
+
+    parser.add_option('-a', '--apfile', action='store', dest='apfile', default='apertures.dat',
+            help='Initial aperture file for photometry', metavar='file')
+
+    parser.add_option('-o', '--output', action='store', dest='opdir', default='./output',
+            help='Dir to place output files', metavar='dir')
+
+    
+
     options, args = parser.parse_args()
 
-    exit(0)
 
-    if len(argv) != 2:
+    if len(args) != 1:
         print >> stderr, "Program requires directory"
         exit(1)
 
-    main(argv)
+    main((options, args))
 
