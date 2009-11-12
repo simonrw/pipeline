@@ -12,13 +12,13 @@ def printoutput(txt):
         print
 
 
-def main(args):
+def main((options, args)):
 
-    srcdir = args[1].rstrip('/')
+    srcdir = args[0].rstrip('/')
     outputdir = 'output'
 
-    if not path.isfile('apertures.dat'):
-        print >> stderr, "Error: file 'apertures.dat' must exist in current directory"
+    if not path.isfile(options.apfile):
+        print >> stderr, "Error: initial aperture file '%s' must exist in current directory" % options.apfile
         exit(1)
 
     p = Popen('ls %s/*.fits' % srcdir, shell=True, stdout=PIPE, stderr=PIPE)
@@ -40,11 +40,11 @@ def main(args):
         result, error = p.communicate()
         if len(error) != 0:
             print error
-        cmd = 'source $STARLINK_DIR/etc/profile && photom &&  autophotom in=%s/%s infile=apertures.dat outfile=%s/%s biasle=0 centro=true exsource=constant etime=1.42 fixann=false usemags=false maxiter=9 maxshift=9 optima=false padu=1.2 photon=1 positive=true sature=1.7E30 search=10 skyest=2 toler=0.05 usemask=false' % (srcdir, sdf, outputdir, catfile)
+        cmd = 'source $STARLINK_DIR/etc/profile && photom &&  autophotom in=%s/%s infile=%s outfile=%s/%s biasle=0 centro=true exsource=constant etime=1.42 fixann=false usemags=false maxiter=9 maxshift=9 optima=false padu=1.2 photon=1 positive=true sature=1.7E30 search=10 skyest=2 toler=0.05 usemask=false' % (srcdir, sdf, options.apfile, outputdir, catfile)
         printoutput(cmd)
         p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
 
-        cmd = 'rm apertures.dat && cp %s/%s ./apertures.dat' % (outputdir, catfile)
+        cmd = 'rm %s && cp %s/%s %s' % (options.apfile, outputdir, catfile, options.apfile)
         printoutput(cmd)
         p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
 
