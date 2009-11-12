@@ -35,7 +35,14 @@ def _mkdir(newdir):
 def main((options, args)):
 
     srcdir = args[0].rstrip('/')
-    outputdir = 'output'
+    outputdir = options.opdir
+
+    #check if options.opdir is a directory
+    try:
+        _mkdir(outputdir)
+    except OSError as c:
+        print >> stderr, "Error: %s" % c
+        exit(1)
 
     if not os.path.isfile(options.apfile):
         print >> stderr, "Error: initial aperture file '%s' must exist in current directory" % options.apfile
