@@ -1,5 +1,6 @@
 photometry/output
 *.fits
+photometry/apertures.dat
 *.pyc
 *.swp
 *.new
