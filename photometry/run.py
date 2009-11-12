@@ -53,6 +53,14 @@ def main(args):
         p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
 
 if __name__ == "__main__":
+
+    parser = OptionParser(usage='Program usage: %prog [options] dir', version='0.1',
+            conflict_handler="resolve")
+
+    options, args = parser.parse_args()
+
+    exit(0)
+
     if len(argv) != 2:
         print >> stderr, "Program requires directory"
         exit(1)
