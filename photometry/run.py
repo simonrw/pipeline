@@ -53,14 +53,6 @@ parameters = {
 
 def main((options, args)):#
 
-
-    cmd =  'autophotom'
-    for n, v in parameters.iteritems():
-        cmd += ' ' + '='.join((n, v))
-
-    print cmd
-    exit(0)
-
     srcdir = args[0].rstrip('/')
     outputdir = options.opdir.rstrip('/')
 
