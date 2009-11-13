@@ -62,7 +62,7 @@ def main((options, args)):#
     exit(0)
 
     srcdir = args[0].rstrip('/')
-    outputdir = options.opdir
+    outputdir = options.opdir.rstrip('/')
 
     #check if options.opdir is a directory
     try:
