@@ -106,7 +106,16 @@ def main((options, args)):#
         result, error = p.communicate()
         if len(error) != 0:
             print error
-        cmd = 'source $STARLINK_DIR/etc/profile && photom &&  autophotom in=%s/%s infile=%s outfile=%s/%s biasle=0 centro=true exsource=constant etime=1.42 fixann=false usemags=false maxiter=9 maxshift=9 optima=false padu=1.2 photon=1 positive=true sature=1.7E30 search=10 skyest=2 toler=0.05 usemask=false' % (srcdir, sdf, options.apfile, outputdir, catfile)
+
+        #check for apfile existence
+        if not os.path.isfile(options.apfile):
+            print >> stderr, "Error: initial aperture file '%s' must exist in current directory" % options.apfile
+            exit(1)
+
+        cmd = 'source $STARLINK_DIR/etc/profile && photom && autophotom'
+        cmd += ' in=%s/%s infile=%s outfile=%s/%s' % (srcdir, sdf, options.apfile, outputdir, catfile)
+        for n, v in parameters.iteritems():
+            cmd += ' ' + '='.join((n, v))
         printoutput(cmd)
         p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
 
