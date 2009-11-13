@@ -63,6 +63,18 @@ def main((options, args)):
         print >> stderr, "Error: %s" % c
         exit(1)
 
+    try:
+        paramfile = open(outputdir + "/cmd", mode="w")
+    except IOError:
+        print >> stderr, "Error writing parameters to %s" % ('/'.join(outputdir, 'cmd'))
+        exit(1)
+
+
+    for pair in parameters.iteritems():
+        paramfile.write(" = ".join(pair) + "\n")
+
+    paramfile.close()
+
     if not os.path.isfile(options.apfile):
         print >> stderr, "Error: initial aperture file '%s' must exist in current directory" % options.apfile
         exit(1)
