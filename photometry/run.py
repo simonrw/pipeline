@@ -1,4 +1,24 @@
 #!/usr/bin/env python
+#important parameters
+parameters = {
+        "biasle": "0",
+        "centro": "true",
+        "exsource": "constant",
+        "etime": "1.0",
+        "fixann": "false",
+        "usemags": "false",
+        "maxiter": "9",
+        "maxshift": "9",
+        "optima": "false",
+        "padu": "1.2",
+        "photon": "1",
+        "positive": "true",
+        "sature": "1.7E30", 
+        "search": "10",
+        "skyest": "2",
+        "toler": "0.05",
+        "usemask": "false"
+        }
 
 from subprocess import Popen, PIPE, STDOUT, call
 from sys import argv, stderr, exit
@@ -31,25 +51,6 @@ def _mkdir(newdir):
         if tail:
             os.mkdir(newdir)
 
-parameters = {
-        "biasle": "0",
-        "centro": "true",
-        "exsource": "constant",
-        "etime": "1.0",
-        "fixann": "false",
-        "usemags": "false",
-        "maxiter": "9",
-        "maxshift": "9",
-        "optima": "false",
-        "padu": "1.2",
-        "photon": "1",
-        "positive": "true",
-        "sature": "1.7E30", 
-        "search": "10",
-        "skyest": "2",
-        "toler": "0.05",
-        "usemask": "false"
-        }
 
 def main((options, args)):#
 
