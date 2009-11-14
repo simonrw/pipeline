@@ -14,15 +14,25 @@ def main(options, args):
     files = os.listdir(datadir)
     files.remove('cmd')
 
+    f = open(datadir + '/' + files[0])
     xcoords = []
     ycoords = []
 
+    for line in f.readlines():
+        if '#' not in line:
+            words = line.split()
+            xcoords.append(words[1])
+            ycoords.append(words[2])
 
-    pltline, = plt.plot(xcoords, ycoords)
+    pltline, = plt.plot(xcoords, ycoords, 'ro', markersize=20, markerfacecolor='white')
+    plt.axis([0, 1024, 0, 1024])
+    plt.title('Frame 1')
 
 
-    for i, file in enumerate(files):
+    for i, file in enumerate(files[1:]):
         f = open(datadir + '/' + file)
+        xcoords = []
+        ycoords = []
         for line in f:
             if '#' not in line:
                 words = line.split()
@@ -32,6 +42,7 @@ def main(options, args):
         f.close()
         pltline.set_xdata(xcoords)
         pltline.set_ydata(ycoords)
+        plt.title('Frame %d' % i)
         plt.draw()
 
 
