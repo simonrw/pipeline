@@ -13,12 +13,12 @@ def main(options, args):
     files = os.listdir(datadir)
     files.remove('cmd')
 
-    xcoords = []
-    ycoords = []
 
 
     for i, file in enumerate(files):
         f = open(datadir + '/' + file)
+        xcoords = []
+        ycoords = []
         for line in f:
             if '#' not in line:
                 words = line.split()
