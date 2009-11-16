@@ -8,9 +8,12 @@ from subprocess import Popen, call, PIPE, STDOUT
 #from IPython.Shell import IPShellEmbed
 
 
+
 def main(options, args):
     datadir = args[0].rstrip('/')
-    files = os.listdir(datadir)
+    p = Popen('ls %s' % datadir, shell=True, stdout=PIPE, stderr=PIPE)
+    files = p.communicate()[0].split()
+    #files = os.listdir(datadir)
     files.remove('cmd')
 
 
