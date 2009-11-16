@@ -67,5 +67,5 @@ if __name__ == '__main__':
 
     tstart = time.time()
     main(sys.argv)
-    print 'Time taken: %fs' % (time.time() - tstart)
+    print 'Time taken: %f min' % ((time.time() - tstart) / 60.)
 
