@@ -18,6 +18,8 @@ def main(arg):
 
     pb = progressbarClass(len(filelist))
 
+    outputdir = '/tmp/movies/'
+
     for i, file in enumerate(filelist):
         if 'iKon' in file:
             try:
@@ -35,7 +37,7 @@ def main(arg):
             cutLevels = ["smart", 99.5]
 
             stub = file.split('.')[0]
-            outputFileName = '/tmp/core2/' + stub + '.png'
+            outputFileName = outputdir + stub + '.png'
             colorMapName = 'hot'
 
             astImages.saveBitmap(outputFileName, imdata, cutLevels, size, colorMapName)
@@ -43,9 +45,9 @@ def main(arg):
 
 
     command = ('mencoder',
-               'mf:///tmp/*.png',
+               'mf://%s*.png' % outputdir,
                '-mf',
-               'type=png:w=800:h=600:fps=25',
+               'type=png:w=1024:h=1024:fps=10',
                '-ovc',
                'lavc',
                '-lavcopts',
