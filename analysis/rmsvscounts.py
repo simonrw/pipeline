@@ -35,7 +35,6 @@ def getAperNumbers(fl, d):
 def main(args):
     dir = args.rstrip('/')
     filelist = os.listdir(dir)
-    filelist.remove('cmd')
     aperNums = getAperNumbers(filelist, dir)
     # create dictionary of apertures
     aperlist = {} 

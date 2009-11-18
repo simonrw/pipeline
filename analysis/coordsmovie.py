@@ -14,7 +14,6 @@ def main(options, args):
     p = Popen('ls %s' % datadir, shell=True, stdout=PIPE, stderr=PIPE)
     files = p.communicate()[0].split()
     #files = os.listdir(datadir)
-    files.remove('cmd')
 
 
 

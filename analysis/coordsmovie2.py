@@ -16,7 +16,6 @@ def main(options, args):
     p = Popen('ls %s' % datadir, shell=True, stdout=PIPE)
     files = p.communicate()[0]
     files = files.split()
-    files.remove('cmd')
 
 
     fig = plt.figure()
