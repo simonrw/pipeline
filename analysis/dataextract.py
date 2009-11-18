@@ -99,7 +99,7 @@ if __name__ == '__main__':
             help="Output raw sky data", default=False)
 
     parser.add_option('-c', '--coords', action="store_true", dest="coords",
-            help="Output coordinate data separated by ','", default=False)
+            help="Output coordinate data separated by ' '", default=False)
 
     (options, args) = parser.parse_args()
 
