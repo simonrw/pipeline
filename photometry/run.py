@@ -25,6 +25,7 @@ from sys import argv, stderr, exit
 import os
 from optparse import OptionParser
 from modules import progressbarClass
+from time import time
 
 def printoutput(txt):
         print "Running command\n"
@@ -153,5 +154,6 @@ if __name__ == "__main__":
         print >> stderr, "Program requires directory"
         exit(1)
 
+    tstart = time()
     main((options, args))
-
+    print "Time taken: %f min" % ((time() - tstart) / 60.)
