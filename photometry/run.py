@@ -67,7 +67,7 @@ def main((options, args)):#
         exit(1)
 
     try:
-        paramfile = open(outputdir + "/cmd", mode="w")
+        paramfile = open(outputdir + "/.cmd", mode="w")
     except IOError:
         print >> stderr, "Error writing parameters to %s" % ('/'.join(outputdir, 'cmd'))
         exit(1)
