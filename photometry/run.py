@@ -88,13 +88,16 @@ def main((options, args)):#
     for file in result.split():
         filelist.append(file)
 
+    if not options.verbose:
+        pb = progressbarClass(len(filelist))
 
     for file in filelist:
         stub = file.rpartition('/')[2]
         sdf = stub.rstrip('.fits') + ".sdf"
         catfile = stub.partition('.')[0] + ".cat"
         cmd = 'source $STARLINK_DIR/etc/profile && convert && fits2ndf in=\"%s/%s\" out=\"%s/%s\"' % (srcdir, stub, srcdir, stub.partition('.')[0])
-        printoutput(cmd)
+        if options.verbose:
+            printoutput(cmd)
         p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
         result, error = p.communicate()
         if len(error) != 0:
@@ -109,15 +112,18 @@ def main((options, args)):#
         cmd += ' in=%s/%s infile=%s outfile=%s/%s' % (srcdir, sdf, options.apfile, outputdir, catfile)
         for n, v in parameters.iteritems():
             cmd += ' ' + '='.join((n, v))
-        printoutput(cmd)
+        if options.verbose:
+            printoutput(cmd)
         p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
 
         cmd = 'rm %s && cp %s/%s %s' % (options.apfile, outputdir, catfile, options.apfile)
-        printoutput(cmd)
+        if options.verbose:
+            printoutput(cmd)
         p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
 
         cmd = 'rm -f %s/%s' % (srcdir, sdf)
-        printoutput(cmd)
+        if options.verbose:
+            printoutput(cmd)
         p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
 
 if __name__ == "__main__":
@@ -131,7 +137,9 @@ if __name__ == "__main__":
 
     parser.add_option('-o', '--output', action='store', dest='opdir', default='./output',
             help='Dir to place output files', metavar='dir')
-
+    
+    parser.add_option('-v', '--verbose', action="store_true", dest="verbose", default=False,
+            help="Print extra information")
     
 
     options, args = parser.parse_args()
