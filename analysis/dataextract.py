@@ -77,17 +77,25 @@ def main(options, args):
 
 if __name__ == '__main__':
 
-    parser = OptionParser(usage="usage: %prog [options] <dir>", conflict_handler="resolve",
+    parser = OptionParser(usage="usage: %prog -[lcs] <dir>", conflict_handler="resolve",
             version="0.1")
-    
+   
+    parser.add_option('-l', '--lc', action="store_true", dest="lightcurve",
+            help="Output sky-subtracted flux data", default=False)
+
+
+    parser.add_option('-s', '--sky', action="store_true", dest="sky",
+            help="Output raw sky data", default=False)
+
+    parser.add_option('-c', '--coords', action="store_true", dest="coords",
+            help="Output coordinate data separated by ','", default=False)
 
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
-        print >> sys.stderr, "Program usage: %s [options] <dir>" % sys.argv[0]
+        print >> sys.stderr, "Program usage: %s -[lcs] <dir>" % sys.argv[0]
         exit(1)
-    
-
+   
 
     main(options, args)
 
