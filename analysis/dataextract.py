@@ -96,6 +96,12 @@ if __name__ == '__main__':
         print >> sys.stderr, "Program usage: %s -[lcs] <dir>" % sys.argv[0]
         exit(1)
    
+    if (options.lightcurve and options.sky) or (options.lightcurve and options.coords) or \
+    (options.sky and options.coords):
+        parser.error('Options are mutually exclusive')
+    elif not options.lightcurve and not options.sky and not options.coords:
+        parser.error('One option of lcs required')
+
 
     main(options, args)
 
