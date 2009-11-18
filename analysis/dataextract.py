@@ -47,7 +47,11 @@ def main(options, args):
 
     # read in data to aperture objects
     for file in filelist:
-        fptr = open(dir + '/' + file)
+        try:
+            fptr = open(dir + '/' + file)
+        except IOError:
+            print >> sys.stdout, "Error opening file %s" % (dir + '/' + file)
+            exit(1)
         data = []
         for line in fptr.readlines():
             if '#' not in line:
