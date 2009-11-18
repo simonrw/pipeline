@@ -24,6 +24,7 @@ from subprocess import Popen, PIPE, STDOUT, call
 from sys import argv, stderr, exit
 import os
 from optparse import OptionParser
+from modules import progressbarClass
 
 def printoutput(txt):
         print "Running command\n"
@@ -91,7 +92,7 @@ def main((options, args)):#
     if not options.verbose:
         pb = progressbarClass(len(filelist))
 
-    for file in filelist:
+    for i, file in enumerate(filelist):
         stub = file.rpartition('/')[2]
         sdf = stub.rstrip('.fits') + ".sdf"
         catfile = stub.partition('.')[0] + ".cat"
@@ -125,6 +126,9 @@ def main((options, args)):#
         if options.verbose:
             printoutput(cmd)
         p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+
+        if not options.verbose:
+            pb.progress(i)
 
 if __name__ == "__main__":
 
