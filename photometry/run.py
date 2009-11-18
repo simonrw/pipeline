@@ -72,6 +72,9 @@ def main((options, args)):#
         print >> stderr, "Error writing parameters to %s" % ('/'.join(outputdir, 'cmd'))
         exit(1)
 
+    #make parameter file read only
+    p = Popen('chmod -w %s/.cmd' % outputdir, shell=True)
+    p.communicate()
 
     for pair in parameters.iteritems():
         paramfile.write(" = ".join(pair) + "\n")
