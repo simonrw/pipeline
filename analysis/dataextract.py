@@ -69,10 +69,21 @@ def main(options, args):
 
 
     #write data to stdout
-    for i in range(len(filelist)):
-        for val in aperlist.values():
-            print val.flux[i],
-        print
+    if options.lightcurve:
+        for i in range(len(filelist)):
+            for val in aperlist.values():
+                print val.flux[i],
+            print
+    elif options.coords:
+        for i in range(len(filelist)):
+            for val in aperlist.values():
+                print "%f %f" % (val.xcoord[i], val.ycoord[i]),
+            print
+    elif options.sky:
+        for i in range(len(filelist)):
+            for val in aperlist.values():
+                print val.sky[i],
+            print
 
 
 if __name__ == '__main__':
