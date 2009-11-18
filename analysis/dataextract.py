@@ -64,6 +64,13 @@ def main(options, args):
             aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
 
 
+    #write data to stdout
+    for i in range(len(filelist)):
+        for val in aperlist.values():
+            print val.flux[i],
+        print
+
+
 if __name__ == '__main__':
 
     parser = OptionParser(usage="usage: %prog [options] <dir>", conflict_handler="resolve",
