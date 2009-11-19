@@ -159,4 +159,4 @@ if __name__ == "__main__":
 
     tstart = time()
     main((options, args))
-    print "Time taken: %f min" % ((time() - tstart) / 60.)
+    print "\n\nTime taken: %f min" % ((time() - tstart) / 60.)
