@@ -83,6 +83,11 @@ def main(options, args):
             for val in aperlist.values():
                 print val.sky[i],
             print
+    elif options.errors:
+        for i in range(len(filelist)):
+            for val in aperlist.values():
+                print val.errors[i],
+            print
 
 
 if __name__ == '__main__':
@@ -110,9 +115,10 @@ if __name__ == '__main__':
         exit(1)
    
     if (options.lightcurve and options.sky) or (options.lightcurve and options.coords) or \
-    (options.sky and options.coords):
+    (options.sky and options.coords) or (options.errors and options.lightcurve) or \
+    (options.errors and options.coords) or (options.errors and options.sky):
         parser.error('Options are mutually exclusive')
-    elif not options.lightcurve and not options.sky and not options.coords:
+    elif not options.lightcurve and not options.sky and not options.coords and not options.errors:
         parser.error('One option of lcs required')
 
 
