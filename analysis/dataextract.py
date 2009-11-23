@@ -100,6 +100,9 @@ if __name__ == '__main__':
     parser.add_option('-c', '--coords', action="store_true", dest="coords",
             help="Output coordinate data separated by ' '", default=False)
 
+    parser.add_option('-e', '--errors', action="store_true", dest="errors",
+            help="Output error data", default=False)
+
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
