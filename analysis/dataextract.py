@@ -87,7 +87,7 @@ def main(options, args):
 
 if __name__ == '__main__':
 
-    parser = OptionParser(usage="usage: %prog -[lcs] <dir>", conflict_handler="resolve",
+    parser = OptionParser(usage="usage: %prog -[lcse] <dir>", conflict_handler="resolve",
             version="0.1")
    
     parser.add_option('-l', '--lc', action="store_true", dest="lightcurve",
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
-        print >> sys.stderr, "Program usage: %s -[lcs] <dir>" % sys.argv[0]
+        print >> sys.stderr, "Program usage: %s -[lcse] <dir>" % sys.argv[0]
         exit(1)
    
     if (options.lightcurve and options.sky) or (options.lightcurve and options.coords) or \
