@@ -86,7 +86,7 @@ def main(options, args):
     elif options.errors:
         for i in range(len(filelist)):
             for val in aperlist.values():
-                print val.errors[i],
+                print val.getErrors()[i],
             print
 
 
