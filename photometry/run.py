@@ -36,7 +36,7 @@ def printoutput(txt):
 
 def main((options, args)):#
 
-    srcdir = args[0].rstrip('/')
+    srcdir = fitsDir(args[0])
     outputdir = options.opdir.rstrip('/')
 
     #check if options.opdir is a directory
@@ -65,18 +65,13 @@ def main((options, args)):#
         print >> stderr, "Error: initial aperture file '%s' must exist in current directory" % options.apfile
         exit(1)
 
-    p = Popen('ls %s/*.fits' % srcdir, shell=True, stdout=PIPE, stderr=PIPE)
-    result, error = p.communicate()
 
 
-    filelist = []
-    for file in result.split():
-        filelist.append(file)
 
     if not options.verbose:
-        pb = progressbarClass(len(filelist))
+        pb = progressbarClass(len(srcdir))
 
-    for i, file in enumerate(filelist):
+    for i, file in enumerate(srcdir):
         stub = file.rpartition('/')[2]
         sdf = stub.rstrip('.fits') + ".sdf"
         catfile = stub.partition('.')[0] + ".cat"
