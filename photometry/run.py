@@ -24,7 +24,7 @@ from subprocess import Popen, PIPE, STDOUT, call
 from sys import argv, stderr, exit
 import os
 from optparse import OptionParser
-from modules import progressbarClass
+from modules import progressbarClass, _mkdir
 from time import time
 
 def printoutput(txt):
@@ -32,26 +32,6 @@ def printoutput(txt):
         print txt
         print
 
-def _mkdir(newdir):
-    """works the way a good mkdir should :)
-        - already exists, silently complete
-        - regular file in the way, raise an exception
-        - parent directory(ies) does not exist, make them as well
-        
-        credit: http://code.activestate.com/recipes/82465/
-    """
-    if os.path.isdir(newdir):
-        pass
-    elif os.path.isfile(newdir):
-        raise OSError("a file with the same name as the desired " \
-                      "dir, '%s', already exists." % newdir)
-    else:
-        head, tail = os.path.split(newdir)
-        if head and not os.path.isdir(head):
-            _mkdir(head)
-        #print "_mkdir %s" % repr(newdir)
-        if tail:
-            os.mkdir(newdir)
 
 
 def main((options, args)):#
