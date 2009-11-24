@@ -49,7 +49,7 @@ def main((options, args)):#
     try:
         paramfile = open(outputdir + "/.cmd", mode="w")
     except IOError:
-        print >> stderr, "Error writing parameters to %s" % ('/'.join(outputdir, 'cmd'))
+        print >> stderr, "Error writing parameters to %s" % ('/'.join((outputdir, 'cmd')))
         exit(1)
 
     #make parameter file read only
