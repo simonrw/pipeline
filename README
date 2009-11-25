@@ -1,0 +1,28 @@
+PIPELINE for analysing data for my project
+
+Contains 4 directories: 
+
+    -   analysis
+
+Scripts for extracting data from the photometry section
+
+    -   astrometry
+
+Directory for doing the astrometry
+
+    -   photometry
+
+Directory for running the pileline itself
+
+    -   sql
+
+Directory for database testing
+
+
+
+
+
+
+
+
+
