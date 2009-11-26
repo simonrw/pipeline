@@ -24,7 +24,7 @@ from subprocess import Popen, PIPE, STDOUT, call
 from sys import argv, stderr, exit
 import os
 from optparse import OptionParser
-from modules import progressbarClass, fitsDir, _mkdir
+from srw import progressbarClass, fitsDir, _mkdir
 from time import time
 
 def printoutput(txt):
