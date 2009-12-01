@@ -20,7 +20,7 @@ parameters = {
         "usemask": "false"
         }
 
-from subprocess import Popen, PIPE, STDOUT, call
+from subprocess import Popen, PIPE, STDOUT
 from sys import argv, stderr, exit
 import os
 from optparse import OptionParser
@@ -94,17 +94,29 @@ def main((options, args)):#
             cmd += ' ' + '='.join((n, v))
         if options.verbose:
             printoutput(cmd)
-        p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+        result, error = p.communicate()
+
+        if len(error) != 0:
+            print error
 
         cmd = 'rm %s && cp %s/%s %s' % (options.apfile, outputdir, catfile, options.apfile)
         if options.verbose:
             printoutput(cmd)
-        p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+        result, error = p.communicate()
+
+        if len(error) != 0:
+            print error
 
         cmd = 'rm -f %s/%s' % (srcdir, sdf)
         if options.verbose:
             printoutput(cmd)
-        p = call(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        p = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        result, error = p.communicate()
+
+        if len(error) != 0:
+            print error
 
         if not options.verbose:
             pb.progress(i)
