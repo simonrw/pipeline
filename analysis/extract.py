@@ -54,6 +54,8 @@ def main(options, args):
             if '#' not in line:
                 data.append(line.rstrip('\n'))
 
+        fptr.close()
+
         for line in data:
             vals = line.split()
             num = vals[0] 
