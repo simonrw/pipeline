@@ -151,7 +151,7 @@ def main(options, args):
             plt.axhline(linewidth=1, alpha=0.75, color='b')
             plt.plot(aper.residuals(), 'rx')
 
-    plt.show()
+    #plt.show()
 
 if __name__ == '__main__':
 
