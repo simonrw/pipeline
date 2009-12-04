@@ -7,6 +7,7 @@ from subprocess import Popen, call, PIPE, STDOUT
 from numpy import array, arange
 import matplotlib.pyplot as plt
 from ApObs import Aperture
+from srw import _mkdir, progressbarClass
 #from IPython.Shell import IPShellEmbed
 
 
@@ -46,8 +47,11 @@ def main(options, args):
 
 
 
+    print "\tReading in data..."
+    pb = progressbarClass(len(filelist))
     # read in data to aperture objects
-    for file in filelist:
+    for i, file in enumerate(filelist):
+        
         fptr = open(dir + '/' + file)
         data = []
         for line in fptr.readlines():
@@ -65,6 +69,10 @@ def main(options, args):
             mag = float(vals[3])
 
             aperlist[num].addLine((coords[0], coords[1], flux['sky'], flux['aper'], err, mag))
+
+        pb.progress(i)
+
+    _mkdir('plots')
 
     # Plotting section 
     if options.coords and not options.lc:
@@ -91,7 +99,10 @@ def main(options, args):
             plt.plot(aper.sky, 'rx')
     
     elif options.lc and options.coords:
-        for aper in aperlist.itervalues():
+        print "\n\n\tMaking plots..."
+        pb = progressbarClass(len(aperlist.values()))
+        for i, aper in enumerate(aperlist.itervalues()):
+
             plt.figure(aper.num)
             plt.subplot(411)
             plt.title('Lightcurve for object %s' % aper.num)
@@ -110,6 +121,9 @@ def main(options, args):
             plt.subplot(414)
             plt.ylabel('Y')
             plt.plot(aper.ycoord, 'go')
+            plt.savefig('plots/aper%s.png'  % aper.num)
+            plt.close()
+            pb.progress(i)
 
     elif options.hist:
         for aper in aperlist.itervalues():
