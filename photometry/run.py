@@ -112,7 +112,7 @@ def main((options, args)):#
         cmd = 'rm -f %s/%s' % (srcdir, sdf)
         if options.verbose:
             printoutput(cmd)
-        p = Popen(cmd, shell=True, stdout=PIPE, stderr=STDOUT)
+        p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
         result, error = p.communicate()
 
         if len(error) != 0:
