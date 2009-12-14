@@ -6,7 +6,7 @@ from optparse import OptionParser
 from subprocess import Popen, call, PIPE, STDOUT
 from numpy import array, arange
 import matplotlib.pyplot as plt
-from ApObs import Aperture, aperComp
+from srw import Aperture, aperComp
 #from IPython.Shell import IPShellEmbed
 
 

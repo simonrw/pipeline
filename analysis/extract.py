@@ -6,8 +6,7 @@ from optparse import OptionParser
 from subprocess import Popen, call, PIPE, STDOUT
 from numpy import array, arange
 import matplotlib.pyplot as plt
-from ApObs import Aperture
-from srw import _mkdir, progressbarClass
+from srw import _mkdir, progressbarClass, Aperture
 #from IPython.Shell import IPShellEmbed
 
 

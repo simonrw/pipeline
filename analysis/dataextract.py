@@ -4,7 +4,7 @@ import sys
 import os
 from optparse import OptionParser
 from subprocess import Popen, call, PIPE, STDOUT
-from ApObs import Aperture
+from srw import Aperture
 #from IPython.Shell import IPShellEmbed
 
 
