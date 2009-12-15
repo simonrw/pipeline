@@ -53,12 +53,15 @@ def main(options, args):
     #write data to stdout
     if options.lightcurve:
         for i in range(len(filelist)):
-            op = []
-            for val in aperlist.values():
-                op.append((int(val.num), val.flux[i]))
+            #op = []
+            #for val in aperlist.values():
+            #    op.append((int(val.num), val.flux[i]))
 
-            for num, val in sorted(op):
-                print val,
+            #for num, val in sorted(op):
+            #    print val,
+            #print
+            for val in aperlist.sorted():
+                print "%f" % val.flux[i],
             print
 
 
