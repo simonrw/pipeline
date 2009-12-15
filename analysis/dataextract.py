@@ -57,12 +57,6 @@ def main(options, args):
                 print "%f" % val.flux[i],
             print
 
-
-
-
-    #TODO: set all other output types to do the same
-
-
     elif options.coords:
         for i in range(len(filelist)):
             for val in aperlist.sorted():
