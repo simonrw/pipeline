@@ -4,6 +4,7 @@ typeset -i str
 if [ "$#" != 2 ]
 then
     echo "Program usage: ${0} <file> <column>"
+    exit
 fi
 
 file=$1
