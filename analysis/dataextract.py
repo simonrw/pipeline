@@ -20,7 +20,7 @@ def main(options, args):
         print val,
     print
 
-    aperlist = {} 
+    aperlist = orderDict({})
     for i in aperNums:
         aperlist[i] = Aperture(i)
 
