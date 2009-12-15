@@ -4,9 +4,8 @@ import sys
 import os
 from optparse import OptionParser
 from subprocess import Popen, call, PIPE, STDOUT
-from srw import Aperture, getAperNumbers
+from srw import Aperture, getAperNumbers, orderDict
 #from IPython.Shell import IPShellEmbed
-
 
 
 def main(options, args):
