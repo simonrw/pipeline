@@ -5,7 +5,7 @@ import os
 from optparse import OptionParser
 from subprocess import Popen, call, PIPE, STDOUT
 from astLib import astImages
-from modules import progressbarClass
+from srw import progressbarClass
 import pyfits
 import time
 #from IPython.Shell import IPShellEmbed
