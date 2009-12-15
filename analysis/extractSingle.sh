@@ -1,5 +1,5 @@
 #!/bin/bash
-typeset -i str
+#typeset -i str
 
 if [ "$#" != 2 ]
 then
@@ -41,9 +41,8 @@ then
 
     length=$(cat $file | wc -l)
     length=$((length - 1))
-    a=$(cat $file | tail -n ${length} | awk "{print \$${count}}")
+    cat $file | tail -n ${length} | awk "{print \$${count}}"
 
-echo $a
 else
     echo "Aperture not found"
 fi
