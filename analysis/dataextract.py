@@ -70,6 +70,10 @@ def main(options, args):
     #write data to stdout
     if options.lightcurve:
         for i in range(len(filelist)):
+            #for val in aperlist.values():
+            #    print val.flux[i],
+            #print
+            op = []
             for val in aperlist.values():
                 print val.flux[i],
             print
