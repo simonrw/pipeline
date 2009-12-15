@@ -65,17 +65,17 @@ def main(options, args):
 
     elif options.coords:
         for i in range(len(filelist)):
-            for val in aperlist.values():
+            for val in aperlist.sorted():
                 print "%f %f" % (val.xcoord[i], val.ycoord[i]),
             print
     elif options.sky:
         for i in range(len(filelist)):
-            for val in aperlist.values():
+            for val in aperlist.sorted():
                 print val.sky[i],
             print
     elif options.errors:
         for i in range(len(filelist)):
-            for val in aperlist.values():
+            for val in aperlist.sorted():
                 print val.getErrors()[i],
             print
 
