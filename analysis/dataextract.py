@@ -4,31 +4,10 @@ import sys
 import os
 from optparse import OptionParser
 from subprocess import Popen, call, PIPE, STDOUT
-from srw import Aperture
+from srw import Aperture, getAperNumbers
 #from IPython.Shell import IPShellEmbed
 
 
-def getAperNumbers(fl, d):
-    """Arguments:
-        fl = filelist, list of strings containing 
-                filenames
-        d = dir, directory where fl is
-
-    Returns:
-        list of numbers of apertures"""
-
-
-    t = open(d + '/' + fl[0])
-    tmp = t.readlines()
-    t.close()
-
-    nums = []
-
-    for line in tmp:
-        if '#' not in line:
-            nums.append(line.split()[0])
-
-    return nums
 
 def main(options, args):
     dir = args[0].rstrip('/')
