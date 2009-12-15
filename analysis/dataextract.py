@@ -84,7 +84,7 @@ def main(options, args):
 
 
 
-
+    #TODO: print header of aperture numbers 
 
 
 
