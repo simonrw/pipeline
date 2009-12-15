@@ -75,7 +75,10 @@ def main(options, args):
             #print
             op = []
             for val in aperlist.values():
-                print val.flux[i],
+                op.append((int(val.num), val.flux[i]))
+
+            for num, val in sorted(op):
+                print val,
             print
 
 
