@@ -44,6 +44,6 @@ then
     cat $file | tail -n ${length} | awk "{print \$${count}}"
 
 else
-    echo "Aperture not found"
+    echo  "Aperture not found" >&2
 fi
 
