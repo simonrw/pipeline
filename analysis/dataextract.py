@@ -16,6 +16,11 @@ def main(options, args):
     #filelist = os.listdir(dir)
     aperNums = getAperNumbers(filelist, dir)
     # create dictionary of apertures
+    print '#',
+    for val in sorted(int(x) for x in aperNums):
+        print val,
+    print
+
     aperlist = {} 
     for i in aperNums:
         aperlist[i] = Aperture(i)
