@@ -77,6 +77,26 @@ def main(options, args):
             for val in aperlist.values():
                 print val.flux[i],
             print
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     elif options.coords:
         for i in range(len(filelist)):
             for val in aperlist.values():
