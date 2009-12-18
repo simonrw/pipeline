@@ -11,45 +11,41 @@ import sys
 import getopt
 import numpy as np
 import matplotlib.pyplot as plt
+from optparse import OptionParser
 import srw
 
 
 
-def main(ap):
+def main((options, args)):
     
-    ap = int(ap)
+    ap = int(args[0])
     
-    try:
-        lc = srw.extractSingle('lightcurve.extract')[ap]
-    except Exception, e:
-        raise e
+    if options.lc:
+        lc = srw.extractSingle(options.lc)[ap]
 
-    av = np.average(lc)
+        av = np.average(lc)
 
-    residuals = lc - av
+        residuals = lc - av
+
+    if options.nonflat:
+        nf = srw.extractSingle(options.nonflat)[ap]
+
+    if options.nonflat and options.lc:
+        diff = lc - nf
+        ratio = lc / nf
         
-    
-    try:
-        coords = srw.extractSingleCoords('coords.extract')[ap]
-    except Exception, e:
-        raise e
+    if options.coords: 
+        coords = srw.extractSingleCoords(options.coords)[ap]
 
     
-    x = coords[0]
-    y = coords[1]
+        x = coords[0]
+        y = coords[1]
     
-    
-    try:
-        er = srw.extractSingle('error.extract')[ap]        
-    except Exception, e:
-        raise e
-        
-    
-    try:
-        sk = srw.extractSingle('sky.extract')[ap]
-    except Exception, e:
-        raise e
-        
+    if options.error: 
+        er = srw.extractSingle(options.error)[ap]        
+
+    if options.sky:
+        sk = srw.extractSingle(options.sky)[ap]
     
     # Plot the data
     
@@ -57,49 +53,146 @@ def main(ap):
     
     length = np.arange(len(lc))
     
-    
+    # list of what to plot and what formatting and label
+    # - data
+    # - format
+    # - label
 
-    ax = fig.add_subplot(511)
-    ax.errorbar(length, lc, er, fmt='rx')
-    v = plt.axis()
-    #plt.axis((v[0], v[1], 0.0, v[3]))
+    plots = []
+
+    try:
+        plots.append([residuals, 'rx', r'$f_i - \bar{f}$'])
+    except UnboundLocalError:
+        pass
+
+
+    try:
+        plots.append([nf, 'rx', 'Non-flatted lightcurve'])
+    except UnboundLocalError:
+        pass
+
+    try:
+        plots.append([diff, 'bx', r'$f_{\mathrm{flat}} - f_{\mathrm{nonflat}}']) 
+    except UnboundLocalError:
+        pass
+    try:
+        plots.append([ratio, 'bx', r'$f_{\mathrm{flat}} / f_{\mathrm{nonflat}}']) 
+    except UnboundLocalError:
+        pass
+
+    try:
+        plots.append([sk, 'gx', 'Sky counts'])
+    except UnboundLocalError:
+        pass
+    
+    try:
+        plots.append([x, 'b.', 'X coordinate (pix)']) 
+    except UnboundLocalError:
+        pass
+    
+    try:
+        plots.append([y, 'b.', 'Y coordinate (pix)']) 
+    except UnboundLocalError:
+        pass
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    no_plots = len(plots) + 1
+
+    ax = fig.add_subplot(no_plots, 1, 1)
+    try:
+        ax.errorbar(length, lc, er, fmt='rx')
+    except UnboundLocalError:
+        ax.plot(lc, 'rx')
                 
     ax.set_title('Information for aperture %d' % ap)
     ax.set_ylabel('Counts')
 
-    ax = fig.add_subplot(512)
-    ax.plot(residuals, 'rx')
-    ax.set_ylabel(r'$f_i - \bar{f}$')
-    
-    ax = fig.add_subplot(513)
-    ax.plot(sk, 'bx')
-    ax.set_ylabel('Counts')
-    
-    ax = fig.add_subplot(514)
-    ax.plot(x, 'gx')
-    ax.set_ylabel('X coordinate (pix)')
-    
-    ax = fig.add_subplot(515)
-    ax.plot(y, 'gx')
-    ax.set_ylabel('Y coordinate (pix)')
-    ax.set_xlabel('Frame')
+    for val in range(2, len(plots) + 2):
+        ax = fig.add_subplot(no_plots, 1, val)
+        ax.plot(plots[val-2][0], plots[val-2][1])
+        ax.set_ylabel(plots[val-2][2])
+
+
+
+    #ax = fig.add_subplot(812)
+    #ax.plot(residuals, 'rx')
+    #ax.set_ylabel(r'$f_i - \bar{f}$')
+
+    #ax = fig.add_subplot(813)
+    #ax.plot(nf, 'bx')
+    #ax.set_ylabel('Non-flatted lightcurve')
+
+    #ax = fig.add_subplot(814)
+    #ax.plot(diff, 'rx')
+    #ax.set_ylabel(r'$f_{\mathrm{flat}} - f_{\mathrm{nonflat}}')
+
+    #ax = fig.add_subplot(815)
+    #ax.plot(ratio, 'rx')
+    #ax.set_ylabel(r'$f_{\mathrm{flat}} / f_{\mathrm{nonflat}}')
+
+    #
+    #ax = fig.add_subplot(816)
+    #ax.plot(sk, 'bx')
+    #ax.set_ylabel('Sky counts')
+    #
+    #ax = fig.add_subplot(817)
+    #ax.plot(x, 'gx')
+    #ax.set_ylabel('X coordinate (pix)')
+    #
+    #ax = fig.add_subplot(818)
+    #ax.plot(y, 'gx')
+    #ax.set_ylabel('Y coordinate (pix)')
+    #ax.set_xlabel('Frame')
     
     plt.show()
     
 
 
 if __name__ == "__main__":
-    print """
-Warning: this program requires 4 files in the current directory:
 
-- lightcurve.extract:   flux data
-- error.extract:        errors data
-- coords.extract:       coordinate data
-- sky.extract:          sky background data
+    parser = OptionParser()
 
-"""
-    try:
-        main(sys.argv[1])
-    except IndexError:
-        print >> sys.stderr, "Program usage: %s <ap number>" % sys.argv[0]
-        sys.exit(1)
+    parser.add_option('-l', '--lightcurve', action='store', dest='lc',
+            help='Lightcurve file', metavar='f')
+
+    parser.add_option('-c', '--coords', action='store', dest='coords', 
+            help='Coordinates', metavar='f')
+    
+
+    parser.add_option('-e', '--error', action='store', dest='error', 
+            help='Errors', metavar='f')
+
+    parser.add_option('-s', '--sky', action='store', dest='sky', 
+            help='Sky', metavar='f')
+
+    parser.add_option('-n', '--nonflat', action='store', dest='nonflat', 
+            help='Pre-flatted data', metavar='f')
+    
+    options, args = parser.parse_args()
+
+
+    if not options.lc and not options.coords and not options.sky and not options.nonflat and not options.error:
+        print >> sys.stderr, "At least one of [lcesn] required"
+        exit(1)
+
+
+    if not options.lc:
+        print >> sys.stderr, "Lightcurve data required"
+        exit(1)
+
+
+    
+    
+    if len(args) != 1:
+        print >> sys.stderr, "Aperture number required"
+        exit(1)
+
+    main((options, args))
+   
