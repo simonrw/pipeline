@@ -23,6 +23,10 @@ def main(ap):
         lc = srw.extractSingle('lightcurve.extract')[ap]
     except Exception, e:
         raise e
+
+    av = np.average(lc)
+
+    residuals = lc - av
         
     
     try:
@@ -55,21 +59,27 @@ def main(ap):
     
     
 
-    ax = fig.add_subplot(411)
+    ax = fig.add_subplot(511)
     ax.errorbar(length, lc, er, fmt='rx')
+    v = plt.axis()
+    #plt.axis((v[0], v[1], 0.0, v[3]))
                 
     ax.set_title('Information for aperture %d' % ap)
     ax.set_ylabel('Counts')
+
+    ax = fig.add_subplot(512)
+    ax.plot(residuals, 'rx')
+    ax.set_ylabel(r'$f_i - \bar{f}$')
     
-    ax = fig.add_subplot(412)
+    ax = fig.add_subplot(513)
     ax.plot(sk, 'bx')
     ax.set_ylabel('Counts')
     
-    ax = fig.add_subplot(413)
+    ax = fig.add_subplot(514)
     ax.plot(x, 'gx')
     ax.set_ylabel('X coordinate (pix)')
     
-    ax = fig.add_subplot(414)
+    ax = fig.add_subplot(515)
     ax.plot(y, 'gx')
     ax.set_ylabel('Y coordinate (pix)')
     ax.set_xlabel('Frame')
