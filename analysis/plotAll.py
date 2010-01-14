@@ -23,10 +23,6 @@ def main((options, args)):
     if options.lc:
         lc = srw.extractSingle(options.lc)[ap]
 
-        av = np.average(lc)
-
-        residuals = lc - av
-
     if options.nonflat:
         nf = srw.extractSingle(options.nonflat)[ap]
 
@@ -66,10 +62,10 @@ exit(0)
 
     plots = []
 
-    try:
-        plots.append([residuals, 'rx', r'$f_i - \bar{f}$'])
-    except UnboundLocalError:
-        pass
+    #try:
+    #    plots.append([residuals, 'rx', r'$f_i - \bar{f}$'])
+    #except UnboundLocalError:
+    #    pass
 
 
     try:
