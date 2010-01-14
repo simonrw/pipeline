@@ -30,8 +30,7 @@ def main((options, args)):
         diff = lc - nf
         ratio = lc / nf
 
-    if options.coords:print coordsData.shape
-exit(0)
+    if options.coords:
 
         coords = srw.extractSingleCoords(options.coords)[ap]
 
@@ -108,7 +107,7 @@ exit(0)
 
 
 
-    no_plots = len(plots) + 1
+    no_plots = len(plots) + 2
 
     ax = fig.add_subplot(no_plots, 1, 1)
     try:
@@ -116,13 +115,24 @@ exit(0)
     except UnboundLocalError:
         ax.plot(lc, 'rx')
 
+
     ax.set_title('Information for aperture %d' % ap)
     ax.set_ylabel('Counts')
 
-    for val in range(2, len(plots) + 2):
+    ax = fig.add_subplot(no_plots, 1, 2)
+    try:
+        ax.errorbar(length, lc, er, fmt='rx')
+    except UnboundLocalError:
+        ax.plot(lc, 'rx')
+
+    axes = ax.axis()
+    ax.axis([axes[0], axes[1], 0, axes[3]])
+
+
+    for val in range(3, len(plots) + 3):
         ax = fig.add_subplot(no_plots, 1, val)
-        ax.plot(plots[val-2][0], plots[val-2][1])
-        ax.set_ylabel(plots[val-2][2])
+        ax.plot(plots[val-3][0], plots[val-3][1])
+        ax.set_ylabel(plots[val-3][2])
 
 
 
