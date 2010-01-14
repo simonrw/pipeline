@@ -17,9 +17,9 @@ import srw
 
 
 def main((options, args)):
-    
+
     ap = int(args[0])
-    
+
     if options.lc:
         lc = srw.extractSingle(options.lc)[ap]
 
@@ -33,26 +33,32 @@ def main((options, args)):
     if options.nonflat and options.lc:
         diff = lc - nf
         ratio = lc / nf
-        
-    if options.coords: 
+
+    if options.coords:print coordsData.shape
+exit(0)
+
         coords = srw.extractSingleCoords(options.coords)[ap]
 
-    
+
         x = coords[0]
         y = coords[1]
-    
-    if options.error: 
-        er = srw.extractSingle(options.error)[ap]        
+
+    if options.error:
+        er = srw.extractSingle(options.error)[ap]
 
     if options.sky:
         sk = srw.extractSingle(options.sky)[ap]
-    
+
+    if options.zd:
+        zd = np.loadtxt(options.zd)
+
     # Plot the data
-    
+
     fig = plt.figure()
-    
+
     length = np.arange(len(lc))
-    
+
+
     # list of what to plot and what formatting and label
     # - data
     # - format
@@ -72,11 +78,11 @@ def main((options, args)):
         pass
 
     try:
-        plots.append([diff, 'bx', r'$f_{\mathrm{flat}} - f_{\mathrm{nonflat}}']) 
+        plots.append([diff, 'bx', r'$f_{\mathrm{flat}} - f_{\mathrm{nonflat}}'])
     except UnboundLocalError:
         pass
     try:
-        plots.append([ratio, 'bx', r'$f_{\mathrm{flat}} / f_{\mathrm{nonflat}}']) 
+        plots.append([ratio, 'bx', r'$f_{\mathrm{flat}} / f_{\mathrm{nonflat}}'])
     except UnboundLocalError:
         pass
 
@@ -84,25 +90,28 @@ def main((options, args)):
         plots.append([sk, 'gx', 'Sky counts'])
     except UnboundLocalError:
         pass
-    
+
     try:
-        plots.append([x, 'b.', 'X coordinate (pix)']) 
+        plots.append([x, 'b.', 'X coordinate (pix)'])
     except UnboundLocalError:
         pass
-    
+
     try:
-        plots.append([y, 'b.', 'Y coordinate (pix)']) 
+        plots.append([y, 'b.', 'Y coordinate (pix)'])
     except UnboundLocalError:
         pass
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+    try:
+        plots.append([zd, 'rx', 'Zenith distance'])
+    except UnboundLocalError:
+        pass
+
+
+
+
+
+
+
     no_plots = len(plots) + 1
 
     ax = fig.add_subplot(no_plots, 1, 1)
@@ -110,7 +119,7 @@ def main((options, args)):
         ax.errorbar(length, lc, er, fmt='rx')
     except UnboundLocalError:
         ax.plot(lc, 'rx')
-                
+
     ax.set_title('Information for aperture %d' % ap)
     ax.set_ylabel('Counts')
 
@@ -150,9 +159,9 @@ def main((options, args)):
     #ax.plot(y, 'gx')
     #ax.set_ylabel('Y coordinate (pix)')
     #ax.set_xlabel('Frame')
-    
+
     plt.show()
-    
+
 
 
 if __name__ == "__main__":
@@ -162,24 +171,27 @@ if __name__ == "__main__":
     parser.add_option('-l', '--lightcurve', action='store', dest='lc',
             help='Lightcurve file', metavar='f')
 
-    parser.add_option('-c', '--coords', action='store', dest='coords', 
+    parser.add_option('-c', '--coords', action='store', dest='coords',
             help='Coordinates', metavar='f')
-    
 
-    parser.add_option('-e', '--error', action='store', dest='error', 
+
+    parser.add_option('-e', '--error', action='store', dest='error',
             help='Errors', metavar='f')
 
-    parser.add_option('-s', '--sky', action='store', dest='sky', 
+    parser.add_option('-s', '--sky', action='store', dest='sky',
             help='Sky', metavar='f')
 
-    parser.add_option('-n', '--nonflat', action='store', dest='nonflat', 
+    parser.add_option('-n', '--nonflat', action='store', dest='nonflat',
             help='Pre-flatted data', metavar='f')
-    
+
+    parser.add_option('-z', '--zd', action='store', dest='zd',
+            help='Zenith distance', metavar='z')
+
     options, args = parser.parse_args()
 
 
-    if not options.lc and not options.coords and not options.sky and not options.nonflat and not options.error:
-        print >> sys.stderr, "At least one of [lcesn] required"
+    if not options.lc and not options.coords and not options.zd and not options.sky and not options.nonflat and not options.error:
+        print >> sys.stderr, "At least one of [lcesnz] required"
         exit(1)
 
 
@@ -188,11 +200,11 @@ if __name__ == "__main__":
         exit(1)
 
 
-    
-    
+
+
     if len(args) != 1:
         print >> sys.stderr, "Aperture number required"
         exit(1)
 
     main((options, args))
-   
+
