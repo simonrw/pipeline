@@ -1,24 +1,5 @@
-#!/usr/bin/env python2.6
+#!/usr/bin/env python
 #important parameters
-parameters = {
-        "biasle": "0",
-        "centro": "true",
-        "exsource": "constant",
-        "etime": "1.0",
-        "fixann": "false",
-        "usemags": "false",
-        "maxiter": "9",
-        "maxshift": "9",
-        "optima": "false",
-        "padu": "1.2",
-        "photon": "1",
-        "positive": "true",
-        "sature": "1.7E30", 
-        "search": "10",
-        "skyest": "2",
-        "toler": "0.05",
-        "usemask": "false"
-        }
 
 from subprocess import Popen, PIPE, STDOUT
 from sys import argv, stderr, exit
@@ -36,13 +17,33 @@ def printoutput(txt):
 
 def main((options, args)):#
 
+    parameters = {
+            "biasle": "0",
+            "centro": "true",
+            "exsource": "constant",
+            "etime": "1.0",
+            "fixann": "false",
+            "usemags": "false",
+            "maxiter": "9",
+            "maxshift": options.maxshift,
+            "optima": "false",
+            "padu": "1.2",
+            "photon": "1",
+            "positive": "true",
+            "sature": "1.7E30",
+            "search": options.search,
+            "skyest": "2",
+            "toler": "0.05",
+            "usemask": "false"
+            }
+
     srcdir = fitsDir(args[0])
     outputdir = options.opdir.rstrip('/')
 
     #check if options.opdir is a directory
     try:
         _mkdir(outputdir)
-    except OSError as c:
+    except (OSError, c):
         print >> stderr, "Error: %s" % c
         exit(1)
 
@@ -126,16 +127,24 @@ if __name__ == "__main__":
     parser = OptionParser(usage='Program usage: %prog [options] dir', version='0.1',
             conflict_handler="resolve")
 
+    defsearch = '12'
+    defshift = '20'
 
     parser.add_option('-a', '--apfile', action='store', dest='apfile', default='apertures.dat',
             help='Initial aperture file for photometry', metavar='file')
 
     parser.add_option('-o', '--output', action='store', dest='opdir', default='./output',
             help='Dir to place output files', metavar='dir')
-    
+
     parser.add_option('-v', '--verbose', action="store_true", dest="verbose", default=False,
             help="Print extra information")
-    
+
+    parser.add_option('-s', '--search', action='store', dest='search', default=defsearch,
+            help='Centroiding search box, default %s' % (defsearch))
+
+    parser.add_option('-m', '--maxshift', action='store', dest='maxshift', default=defshift,
+            help='Maximum shifting, default %s' % (defshift))
+
 
     options, args = parser.parse_args()
 
